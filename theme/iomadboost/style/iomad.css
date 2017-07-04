@@ -250,3 +250,7 @@ div.iomadlink {
 #page-footer {
   background-color: #fff !important;
 }
+
+#page.container-fluid {
+  padding: 0 2rem 0 0;
+}
