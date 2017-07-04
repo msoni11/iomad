@@ -1,13 +1,15 @@
+body {
+  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
 .navbar {
     margin-bottom : 3px;
 }
-.navbar-light .navbar-brand  {
+/*.navbar-light .navbar-brand  {
   font-family: Ubuntu;
   background-color: #f75701;
-}
+}*/
 .moodleheader h1 {
     font-family: Ubuntu;
-    color: #f75701;
     margin: 10px 0;
 }
 .dashboard-section .headingblock {
@@ -25,13 +27,11 @@
   padding: 0 10px;
 }
 .navbar-text a {
-  color: #f75701;
 }
 #page-header h1 {
   font-family: Ubuntu;
   font-size: 40px;
   font-weight: normal;
-  color: #f75701;
 }
 #region-main {
   background-color: #ffffff;
@@ -45,20 +45,17 @@
   box-shadow: rgba(0, 0, 0, 0.0470588) 0 1px 1px inset;
 }
 .iomad_block_title {
-  color: #f75701;
   font-size: 14px;
   text-transform: uppercase;
   font-family: Ubuntu;
   font-weight: normal;
 }
 .block .card-block h3 {
-  color: #f75701;
   font-size: 16px;
   font-family: Ubuntu;
   font-weight: normal;
 }
 .block .content h3 {
-  color: #f75701;
   font-size: 18px;
   font-family: Ubuntu;
   font-weight: normal;
@@ -71,7 +68,6 @@ body {
   background-color: #eeeeee;
 }
 #page-footer a {
-  color: #f75701;
 }
 
 #sitelogo {
@@ -236,4 +232,13 @@ div.iomadlink {
 .moodleheader h1:before {
     font-family: FontAwesome;
     content: "\f0e4  ";
+}
+
+/* msoni */
+.site-name, .notloggedin .navbar-brand {
+  display: none;
+}
+
+#region-main {
+  border: none;
 }
