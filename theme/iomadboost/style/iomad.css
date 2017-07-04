@@ -254,3 +254,7 @@ div.iomadlink {
 #page.container-fluid {
   padding: 0 2rem 0 0;
 }
+
+.notloggedin #page.container-fluid {
+  padding: 0 2rem;
+}
