@@ -242,3 +242,11 @@ div.iomadlink {
 #region-main {
   border: none;
 }
+
+.logininfo, .homelink, .helplink {
+  display: none;
+}
+
+#page-footer {
+  background-color: #f7f7f7;
+}
