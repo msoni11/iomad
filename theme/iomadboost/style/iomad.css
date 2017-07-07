@@ -251,14 +251,39 @@ div.iomadlink {
   background-color: #fff !important;
 }
 
-#page.container-fluid {
-  padding: 0 2rem 0 0;
-}
-
 .notloggedin #page.container-fluid {
   padding: 0 2rem;
 }
 
 .notloggedin [data-action=toggle-drawer] {
     display: none;
+}
+
+[data-action=toggle-drawer] {
+  margin-top: 23px;
+}
+
+/** navbar **/
+.navbar {
+  max-height:100px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  margin-top: 19px;
+}
+
+.action-menu {
+  margin-top: 19px;
+}
+
+.usertext {
+  display: none;
+}
+
+header .logo img {
+  max-height: 70px;
+}
+
+#page {
+  margin-top: 90px;
 }
