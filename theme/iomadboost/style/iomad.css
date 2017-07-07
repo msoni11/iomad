@@ -258,3 +258,7 @@ div.iomadlink {
 .notloggedin #page.container-fluid {
   padding: 0 2rem;
 }
+
+.notloggedin [data-action=toggle-drawer] {
+    display: none;
+}
