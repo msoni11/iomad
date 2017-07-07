@@ -295,3 +295,7 @@ header .logo img {
 .usermenu {
   margin-top: 19px;
 }
+
+.nonloggedin .card {
+  display: none;
+}
