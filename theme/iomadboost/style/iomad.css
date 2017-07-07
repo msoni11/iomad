@@ -235,7 +235,7 @@ div.iomadlink {
 }
 
 /* msoni */
-.site-name, .notloggedin .navbar-brand {
+.site-name {
   display: none;
 }
 
@@ -286,4 +286,12 @@ header .logo img {
 
 #page {
   margin-top: 90px;
+}
+
+[data-region="drawer"] {
+  top: 85px;
+}
+
+.usermenu {
+  margin-top: 19px;
 }
