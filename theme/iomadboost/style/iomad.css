@@ -272,10 +272,6 @@ div.iomadlink {
   margin-top: 19px;
 }
 
-.action-menu {
-  margin-top: 19px;
-}
-
 .usertext {
   display: none;
 }
@@ -290,6 +286,10 @@ header .logo img {
 
 [data-region="drawer"] {
   top: 85px;
+}
+
+.card .logo {
+  display: none;
 }
 
 .usermenu {
