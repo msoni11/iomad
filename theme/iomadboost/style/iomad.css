@@ -296,6 +296,6 @@ header .logo img {
   margin-top: 19px;
 }
 
-.notloggedin .card .card-block {
+#page-site-index.notloggedin .card .card-block {
   display: none;
 }
