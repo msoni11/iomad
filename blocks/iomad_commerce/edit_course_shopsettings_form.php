@@ -384,7 +384,7 @@ if (array_key_exists('blockPrices', $_POST)) {
 // Set the name for the page.
 $linktext = get_string('course_list_title', 'block_iomad_commerce');
 // Set the url.
-$linkurl = new moodle_url('/blocks/iomad_commerce/courselist.php');
+$linkurl = new moodle_url('/blocks/iomad_commerce/edit_course_shopsettings_form.php');
 
 $title = 'edit_course_shopsettings';
 if ($isadding) {
