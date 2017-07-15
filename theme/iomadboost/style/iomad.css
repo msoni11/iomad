@@ -299,9 +299,3 @@ header .logo img {
 #page-site-index.notloggedin .card .card-block {
   display: none;
 }
-
-.dropdown-l {
-  font-size: 18px;
-  color: rgba(0,0,0,.535);
-  margin-top: 4px;
-}
