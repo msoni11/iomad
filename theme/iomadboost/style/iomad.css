@@ -303,11 +303,7 @@ header .logo img {
 .dropdown-l {
   font-size: 18px;
   color: rgba(0,0,0,.535);
-  margin-top: 7px;
-}
-
-.dropdown-l:hover, .dropdown-l:active {
-  color: rgba(0,0,0,.535);
+  margin-top: 6px;
 }
 
 .avatar {
