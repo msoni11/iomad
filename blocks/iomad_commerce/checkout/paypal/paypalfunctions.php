@@ -147,6 +147,7 @@ function callmarkexpresscheckout($paymentamount, $currencycodetype, $paymenttype
     // Construct the parameter string that describes the SetExpressCheckout API call in the shortcut implementation.
 
     $nvpstr = "&PAYMENTREQUEST_0_AMT=". $paymentamount;
+    $nvpstr = $nvpstr . "&PAYMENTREQUEST_0_ITEMAMT=". $paymentamount;
     $nvpstr = $nvpstr . "&PAYMENTREQUEST_0_PAYMENTACTION=" . $paymenttype;
     $nvpstr = $nvpstr . "&RETURNURL=" . $returnurl;
     $nvpstr = $nvpstr . "&CANCELURL=" . $cancelurl;
