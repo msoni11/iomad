@@ -303,5 +303,9 @@ header .logo img {
 .dropdown-l {
   font-size: 18px;
   color: rgba(0,0,0,.535);
-  margin-top: 4px;
+  margin-top: 6px;
+}
+
+.avatar {
+  display: none;
 }
