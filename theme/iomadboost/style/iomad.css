@@ -307,3 +307,11 @@ header .logo img {
 #page-mod-page-view .modified {
   display: none;
 }
+
+#page-mod-page-view.notloggedin #page-header .card {
+  display:none;
+}
+
+#page-site-index.notloggedin .activityinstance {
+  display:none;
+}
