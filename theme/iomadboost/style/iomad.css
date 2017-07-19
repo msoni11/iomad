@@ -299,3 +299,11 @@ header .logo img {
 #page-site-index.notloggedin .card .card-block {
   display: none;
 }
+
+#page-mod-page-view [data-action=toggle-drawer] {
+    display: none;
+}
+
+#page-mod-page-view .modified {
+  display: none;
+}
