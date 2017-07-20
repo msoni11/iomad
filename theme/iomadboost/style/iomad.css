@@ -315,3 +315,7 @@ header .logo img {
 #page-site-index.notloggedin .activityinstance {
   display:none;
 }
+
+#page-header .card-block {
+  padding: 0 1rem;
+}
