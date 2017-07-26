@@ -45,8 +45,6 @@ class checkout_form extends moodleform {
         $mform->addRule('lastname', $strrequired, 'required', null, 'client');
         $mform->setType('lastname', PARAM_NOTAGS);
 
-        $modify->addElement('hidden', 'company');
-
         $mform->addElement('text', 'address', get_string('address'), 'maxlength="70" size="50"');
         $mform->addRule('address', $strrequired, 'required', null, 'client');
         $mform->setType('address', PARAM_NOTAGS);
