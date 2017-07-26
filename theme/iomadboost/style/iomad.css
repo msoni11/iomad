@@ -265,7 +265,7 @@ div.iomadlink {
 
 /** navbar **/
 .navbar {
-  max-height:100px;
+  max-height:120px;
 }
 
 .navbar-light .navbar-nav .nav-link {
@@ -318,4 +318,23 @@ header .logo img {
 
 #page-header .card-block {
   padding: 0 1rem;
+}
+
+.social-link {
+  color: #ccc;
+  padding: 0;
+  margin: 0;
+}
+
+.social-link:hover, .social-link:active {
+  color: #aaa;
+  text-decoration: none;
+}
+
+.social-icon {
+    font-size: 1.9em;
+}
+
+header {
+  padding-top: 0px;
 }
