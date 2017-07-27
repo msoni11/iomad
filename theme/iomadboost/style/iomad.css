@@ -326,7 +326,7 @@ header .logo img {
   margin: 0;
 }
 
-.social-link:hover, .social-link:active {
+.social-link:hover, .social-link:active, .social-link:focus {
   color: #aaa;
   text-decoration: none;
 }
