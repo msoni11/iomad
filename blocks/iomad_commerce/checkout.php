@@ -45,10 +45,6 @@ class checkout_form extends moodleform {
         $mform->addRule('lastname', $strrequired, 'required', null, 'client');
         $mform->setType('lastname', PARAM_NOTAGS);
 
-        $mform->addElement('text', 'company', get_string('company', 'block_iomad_company_admin'), 'maxlength="40" size="50"');
-        $mform->addRule('company', $strrequired, 'required', null, 'client');
-        $mform->setType('company', PARAM_NOTAGS);
-
         $mform->addElement('text', 'address', get_string('address'), 'maxlength="70" size="50"');
         $mform->addRule('address', $strrequired, 'required', null, 'client');
         $mform->setType('address', PARAM_NOTAGS);
@@ -75,6 +71,7 @@ class checkout_form extends moodleform {
         $mform->setType('email', PARAM_NOTAGS);
 
         $mform->addElement('text', 'phone1', get_string('phone'), 'maxlength="20" size="50"');
+        $mform->addRule('phone1', $strrequired, 'required', null, 'client');
         $mform->setType('phone1', PARAM_NOTAGS);
 
         $mform->addElement('header', 'header', get_string('payment_options', 'block_iomad_commerce' ));

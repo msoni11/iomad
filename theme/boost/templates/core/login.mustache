@@ -206,6 +206,8 @@
         {{{instructions}}}
         {{#cansignup}}
             <form class="m-t-1" action="{{signupurl}}" method="get" id="signup">
+                <input type="hidden" name="id" value="{{companyid}}" />
+                <input type="hidden" name="code" value="{{companycode}}" />
                 <button type="submit" class="btn btn-secondary">{{#str}}startsignup{{/str}}</button>
             </form>
         {{/cansignup}}

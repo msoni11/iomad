@@ -99,7 +99,7 @@ class paypal extends payment_provider {
         $cancelurl = paypal_cancelurl();
 
         // Get the details for the paypal invoice.
-        $details = $DB->get_records_sql("SELECT c.fullname, ii.quantity, ii.price from {course} c INNER JOIN {invoiceitem} ii
+        $details = $DB->get_records_sql("SELECT c.fullname, ii.license_allocation as quantity, ii.price from {course} c INNER JOIN {invoiceitem} ii
                                          ON ii.invoiceableitemid=c.id AND invoiceid=".$basket->id);
 
         //  Calls the SetExpressCheckout API call.

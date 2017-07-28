@@ -32,7 +32,7 @@ if (isloggedin() && !behat_is_test_site()) {
 } else {
     $navdraweropen = false;
 }
-$navdraweropen = false;
+$navdraweropen = true;
 $extraclasses = [];
 if ($navdraweropen) {
     $extraclasses[] = 'drawer-open-left';

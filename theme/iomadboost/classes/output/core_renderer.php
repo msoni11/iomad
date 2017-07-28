@@ -196,10 +196,8 @@ class core_renderer extends \core_renderer {
 
         // Only render the logo if we're on the front page or login page and the we have a logo.
         $logo = $this->get_logo_url();
-        if ($headinglevel == 1 && !empty($logo)) {
-            if ($PAGE->pagelayout == 'frontpage' || $PAGE->pagelayout == 'login') {
-                return true;
-            }
+        if (!empty($logo)) {
+            return true;
         }
 
         return false;
@@ -213,7 +211,7 @@ class core_renderer extends \core_renderer {
      */
     public function should_display_navbar_logo() {
         $logo = $this->get_compact_logo_url();
-        return !empty($logo) && !$this->should_display_main_logo();
+        return !empty($logo) && $this->should_display_main_logo();
     }
 
     /*

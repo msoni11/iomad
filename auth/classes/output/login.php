@@ -80,7 +80,7 @@ class login implements renderable, templatable {
      * @param string $username The username to display.
      */
     public function __construct(array $authsequence, $username = '') {
-        global $CFG, $SESSION;
+        global $CFG, $SESSION, $DB;
 
         $this->username = $username;
 
@@ -95,7 +95,9 @@ class login implements renderable, templatable {
 
         $this->forgotpasswordurl = new moodle_url($CFG->httpswwwroot . '/login/forgot_password.php');
         $this->loginurl = new moodle_url($CFG->httpswwwroot . '/login/index.php');
-        $this->signupurl = new moodle_url('/login/signup.php');
+        $this->signupurl = new moodle_url('/local/iomad_signup/signup.php');
+        $this->companycode = 'tfs';
+        $this->companyid = $DB->get_field('company', 'id', array('shortname' => 'tfs'), $strictness=IGNORE_MISSING);
 
         // Authentication instructions.
         $this->instructions = $CFG->auth_instructions;
@@ -145,6 +147,8 @@ class login implements renderable, templatable {
         $data->hasidentityproviders = !empty($this->identityproviders);
         $data->hasinstructions = !empty($this->instructions);
         $data->identityproviders = $identityproviders;
+        $data->companycode = $this->companycode;
+        $data->companyid = $this->companyid;
         list($data->instructions, $data->instructionsformat) = external_format_text($this->instructions, FORMAT_MOODLE,
             context_system::instance()->id);
         $data->loginurl = $this->loginurl->out(false);
