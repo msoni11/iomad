@@ -176,13 +176,13 @@ if ($objectcount) {
         foreach ($courses as $course_shopsetting) {
             $available = $course_shopsetting->allow_single_purchase || $course_shopsetting->allow_license_blocks;
             if ($available) {
-                $buynowbutton = "<a href=\"course.php?id=$course_shopsetting->thecourseid#buynow\">$strbuynow</a>";
+                $buynowbutton = "<a class='btn btn-primary' href=\"course.php?id=$course_shopsetting->thecourseid#buynow\">$strbuynow</a>";
 
                 $price = get_lowest_price_text($course_shopsetting);
                 $moreinfobutton = "$price <a href='course.php?id=$course_shopsetting->thecourseid'>$strmoreinfo</a>";
             } else {
                 $buynowbutton = "";
-                $moreinfobutton = "<a href='course.php?id=$course_shopsetting->thecourseid'>$strmoreinfo</a>";
+                $moreinfobutton = "<a class='btn btn-primary' href='course.php?id=$course_shopsetting->thecourseid'>$strmoreinfo</a>";
             }
 
 
