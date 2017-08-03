@@ -830,7 +830,7 @@ class core_renderer extends \core_renderer {
         $signupurl = $CFG->wwwroot. '/local/iomad_signup/signup.php?id=' . $companyid . '&code='. $companycode;
         // If not logged in, show the typical not-logged-in string.
         if (!isloggedin()) {
-            $returnstr = get_string('loggedinnot', 'moodle');
+            $returnstr = '';
             if (!$loginpage) {
                 $returnstr .= " <a href=\"$loginurl\">" . get_string('login') . '</a> | ';
                 $returnstr .= "<a href=\"$signupurl\">".get_string('signup').'</a>';
