@@ -80,7 +80,7 @@ if ($course) {
         if ($course->allow_single_purchase) {
             $table->data[] = array(get_string('single_purchase', 'block_iomad_commerce'),
                                    $course->single_purchase_currency . number_format($course->single_purchase_price, 2),
-                                   "<a href='buynow.php?courseid=$course->courseid'>" .
+                                   "<a class='btn btn-primary' href='buynow.php?courseid=$course->courseid'>" .
                                    get_string('buynow', 'block_iomad_commerce') .
                                    "<a>");
         }

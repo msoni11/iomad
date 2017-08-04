@@ -40,8 +40,8 @@ class block_iomad_commerce extends block_base {
                                          FROM {user} u
                                          JOIN {company_users} cu ON cu.userid = u.id
                                          JOIN {company} c ON cu.companyid = c.id
-                                         WHERE u.id = :userid",
-                                         array('userid' => $USER->id));
+                                         WHERE u.id = :userid AND c.shortname = :shortname",
+                                         array('userid' => $USER->id, 'shortname' => 'tfs'));
 
         if (!is_siteadmin() && !$ecommerce && !$CFG->commerce_admin_enableall) {
             return null;

@@ -67,9 +67,9 @@ if (!empty($SESSION->basketid)) {
 
     if ($baskethtml) {
         echo $baskethtml;
-        echo '<p><a href="checkout.php">' . get_string('checkout', 'block_iomad_commerce') .
-              '</a></p> <p>' . get_string('or', 'block_iomad_commerce') .
-              '</p> <p><a href="shop.php">' . get_string('returntoshop', 'block_iomad_commerce') .
+        echo '<p class="text-right"><a class="btn btn-primary"  href="checkout.php">' . get_string('checkout', 'block_iomad_commerce') .
+              '</a></p> <p class="text-right">' . get_string('or', 'block_iomad_commerce') .
+              '</p> <p class="text-right"><a class="btn btn-primary" href="shop.php">' . get_string('returntoshop', 'block_iomad_commerce') .
               '</a></p> ';
 
         foreach (get_enabled_payment_providers_instances() as $pp) {

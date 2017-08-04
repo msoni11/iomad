@@ -2055,3 +2055,4 @@ $string['maxbytesforfile'] = 'The file {$a} is larger than the maximum size allo
 // Deprecated since Moodle 3.2.
 $string['modchooserenable'] = 'Activity chooser on';
 $string['modchooserdisable'] = 'Activity chooser off';
+$string['signup'] = 'Sign up';
