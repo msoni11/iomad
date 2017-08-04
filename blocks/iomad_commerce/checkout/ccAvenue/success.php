@@ -10,19 +10,21 @@ require_once(dirname(__FILE__) . '/../paymentprovider.php');
 require_once(dirname(__FILE__) . '/ccAvenuefunctions.php');
 require_once(dirname(__FILE__) . '/config.php');
 
+global $CFG;
+$merchant_id = $CFG->ccAvenue_merchant_id;
+$working_key = $CFG->ccAvenue_working_key;
+$access_code = $CFG->ccAvenue_access_code;
 
-$response=$_POST["encResponse"];
-$ccavenue = new ccAvenuePayment( 'M_smi44769_44769', '9vixgnzn5772ev1b13bz52chdxeq0bk3', '');
+
+$response=$_POST["encResp"];
+$ccavenue = new ccAvenuePayment($merchant_id, $working_key);
 // Check if the transaction was successfull.
-echo $ccavenue->response( $response );
+$ccavenue->response($_POST);
 
 $basket = get_basket();
 $pp = get_payment_provider_instance($basket->checkout_method);
 
-$error = $pp->confirm();
+//$error = $pp->confirm();
 
 // Note : we need some code here. Reference paypal->confirm() method.
 
-if (!$error) {
-    redirect('confirm.php?u=' . $basket->reference);
-}

@@ -11,12 +11,16 @@ require_once(dirname(__FILE__) . '/ccAvenuefunctions.php');
 require_once(dirname(__FILE__) . '/config.php');
 
 
-global $USER;
+global $USER, $CFG;
 
 $basket = get_basket();
 $paymentamount = $_SESSION["Payment_Amount"];
 
-$ccavenue = new ccAvenuePayment( 'M_smi44769_44769', '9vixgnzn5772ev1b13bz52chdxeq0bk3', ccAvenue_responseurl());
+$merchant_id = $CFG->ccAvenue_merchant_id;
+$working_key = $CFG->ccAvenue_working_key;
+$access_code = $CFG->ccAvenue_access_code;
+
+$ccavenue = new ccAvenuePayment($merchant_id, $working_key);
 // set details
 $ccavenue->setAmount($paymentamount);
 $ccavenue->setOrderId($basket->reference);
@@ -25,7 +29,9 @@ $ccavenue->setBillingAddress($basket->address);
 $ccavenue->setBillingCity($basket->city);
 $ccavenue->setBillingZip($basket->postcode);
 $ccavenue->setBillingState($basket->state);
-$ccavenue->setBillingCountry($basket->country);
+$countryChoices = get_string_manager()->get_list_of_countries();
+$country = $countryChoices["$basket->country"];
+$ccavenue->setBillingCountry($country);
 $ccavenue->setBillingEmail($basket->email);
 $ccavenue->setBillingTel($basket->phone1);
 $ccavenue->setBillingNotes('');
@@ -34,18 +40,15 @@ $ccavenue->setBillingNotes('');
 $ccavenue->billingSameAsShipping();
 
 // get encrpyted data to be passed
-$data = $ccavenue->getEncryptedData();
-
-// merchant id to be passed along the param
-$merchant = $ccavenue->getMerchantId();
+$encrypted_data = $ccavenue->getEncryptedData();
 
 ?>
 
 <!-- Request -->
-<form method="post" name="redirect" action="http://www.ccavenue.com/shopzone/cc_details.jsp">
+<form method="post" name="redirect" action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
     <?php
-    echo '<input type=hidden name=encRequest value="'.$data.'"">';
-    echo '<input type=hidden name=Merchant_Id value="'.$merchant.'">';
+    echo "<input type=hidden name=encRequest value=$encrypted_data>";
+    echo "<input type=hidden name=access_code value=$access_code>";
     ?>
 </form>
 

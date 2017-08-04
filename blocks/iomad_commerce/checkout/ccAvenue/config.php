@@ -7,7 +7,8 @@ function ccAvenue_reviewurl() {
 }
 
 function ccAvenue_cancelurl() {
-    return new moodle_url("/blocks/iomad_commerce/checkout/ccAvenue/cancel.php");
+    global $CFG;
+    return $CFG->wwwroot."/blocks/iomad_commerce/checkout/ccAvenue/cancel.php";
 }
 
 function ccAvenue_payurl() {

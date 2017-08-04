@@ -14,6 +14,7 @@ class ccAvenuePayment {
     private $amount;
     private $order_id;
     private $url;
+    private $cancel_url;
     private $billing_name;
     private $billing_address;
     private $billing_country;
@@ -31,11 +32,12 @@ class ccAvenuePayment {
     private $delivery_tel;
     private $billing_notes;
 
-    public function __construct( $merchant_id, $working_key, $url )
+    public function __construct( $merchant_id, $working_key)
     {
         $this->merchant_id = $merchant_id;
         $this->working_key = $working_key;
-        $this->url = $url;
+        $this->url = ccAvenue_responseurl();
+        $this->cancel_url = ccAvenue_cancelurl();
     }
 
     public function getWorkingKey() {
@@ -76,6 +78,14 @@ class ccAvenuePayment {
 
     public function getRedirectUrl() {
         return $this->url;
+    }
+
+    public function setCancelUrl( $url ) {
+        $this->cancel_url = $url;
+    }
+
+    public function getCancelUrl() {
+        return $this->cancel_url;
     }
 
     public function setBillingName( $billing_name ) {
@@ -216,80 +226,81 @@ class ccAvenuePayment {
         $this->delivery_tel = $this->billing_tel;
     }
 
-    private function getMerchantData( $checksum ) {
-        $merchant_data= 'Merchant_Id='.$this->getMerchantId();
-        $merchant_data .= '&Amount='.$this->getAmount();
-        $merchant_data .= '&Order_Id='.$this->getOrderId();
-        $merchant_data .= '&Redirect_Url='.$this->getRedirectUrl();
-        $merchant_data .= '&billing_cust_name='.$this->getBillingName();
-        $merchant_data .= '&billing_cust_address='.$this->getBillingAddress();
-        $merchant_data .= '&billing_cust_country='.$this->getBillingCountry();
-        $merchant_data .= '&billing_cust_state='.$this->getBillingState();
-        $merchant_data .= '&billing_cust_city='.$this->getBillingCity();
-        $merchant_data .= '&billing_zip_code='.$this->getBillingZip();
-        $merchant_data .= '&billing_cust_tel='.$this->getBillingTel();
-        $merchant_data .= '&billing_cust_email='.$this->getBillingEmail();
-        $merchant_data .= '&delivery_cust_name='.$this->getDeliveryName();
-        $merchant_data .= '&delivery_cust_address='.$this->getDeliveryAddress();
-        $merchant_data .= '&delivery_cust_country='.$this->getDeliveryCountry();
-        $merchant_data .= '&delivery_cust_state='.$this->getDeliveryState();
-        $merchant_data .= '&delivery_cust_city='.$this->getDeliveryCity();
-        $merchant_data .= '&delivery_zip_code='.$this->getDeliveryZip();
-        $merchant_data .= '&delivery_cust_tel='.$this->getDeliveryTel();
-        $merchant_data .= '&billing_cust_notes='.$this->getBillingNotes();
-        $merchant_data .= '&Checksum='.$checksum  ;
+    private function getMerchantData() {
+        $merchant_data= 'merchant_id='.urlencode($this->getMerchantId());
+        $merchant_data .= '&amount='.urlencode($this->getAmount());
+        $merchant_data .= '&order_id='.urlencode($this->getOrderId());
+        $merchant_data .= '&redirect_url='.urlencode($this->getRedirectUrl());
+        $merchant_data .= '&currency='.urlencode('INR');
+        $merchant_data .= '&language='.urlencode('en');
+        $merchant_data .= '&cancel_url='.urlencode($this->getCancelUrl());
+        $merchant_data .= '&billing_name='.urlencode($this->getBillingName());
+        $merchant_data .= '&billing_address='.urlencode($this->getBillingAddress());
+        $merchant_data .= '&billing_country='.urlencode($this->getBillingCountry());
+        $merchant_data .= '&billing_state='.urlencode($this->getBillingState());
+        $merchant_data .= '&billing_city='.urlencode($this->getBillingCity());
+        $merchant_data .= '&billing_zip='.urlencode($this->getBillingZip());
+        $merchant_data .= '&billing_tel='.urlencode($this->getBillingTel());
+        $merchant_data .= '&billing_email='.urlencode($this->getBillingEmail());
+        $merchant_data .= '&delivery_name='.urlencode($this->getDeliveryName());
+        $merchant_data .= '&delivery_address='.urlencode($this->getDeliveryAddress());
+        $merchant_data .= '&delivery_country='.urlencode($this->getDeliveryCountry());
+        $merchant_data .= '&delivery_state='.urlencode($this->getDeliveryState());
+        $merchant_data .= '&delivery_city='.urlencode($this->getDeliveryCity());
+        $merchant_data .= '&delivery_zip='.urlencode($this->getDeliveryZip());
+        $merchant_data .= '&delivery_tel='.urlencode($this->getDeliveryTel());
+        $merchant_data .= '&merchant_param1='.urlencode($this->getBillingNotes());
 
         return $merchant_data;
     }
 
     public function getEncryptedData() {
         $utils = new ccAvenueUtils( $this );
-        $merchant_data = $this->getMerchantData( $utils->getChecksum() );
+        $merchant_data = $this->getMerchantData();
         return $utils->encrypt($merchant_data,$this->getWorkingKey());
     }
 
     public function response( $response ) {
         $utils = new ccAvenueUtils( $this );
         $resonse_data = $utils->decrypt( $response, $this->getWorkingKey() );
-        $payment_data=explode('&', $resonse_data);
-        $data_size=sizeof($payment_data);
+        $payment_data = explode('&', $resonse_data);
+        $data_size = sizeof($payment_data);
 
         $auth_desc = null;
-        $checksum = null;
-
         for($i = 0; $i < $data_size; $i++)
         {
             $information = explode('=',$payment_data[$i]);
-            if( $i==0 )
-                $this->setMerchantId( $information[1] );
-            if($i==1)
-                $this->setOrderId( $information[1] );
-            if($i==2)
-                $this->setAmount( $information[1] );
-            if($i==3)
-                $auth_desc = $information[1];
-            if($i==4)
-                $checksum = $information[1];
+            if($i==3) {
+                $auth_desc=$information[1];
+            }
         }
 
-        $payment_data_string = $this->getMerchantId().'|'.$this->getOrderId().'|'.$this->getAmount().'|'.$auth_desc.'|'.$this->getWorkingKey();
-        $verify_checksum = $utils->verifyChecksum( $utils->genchecksum( $payment_data_string ), $checksum );
-
-
-        if($verify_checksum==TRUE && $auth_desc==="Y")
+        if($auth_desc==="Success")
         {
+            //Here you need to put in the routines for a successful
+            //transaction such as sending an email to customer,
+            //setting database status, informing logistics etc etc
             return "success";
         }
-        else if($verify_checksum==TRUE && $auth_desc==="B")
+        else if($auth_desc==="Aborted")
         {
+            //Here you need to put in the routines/e-mail for a  "Batch Processing" order
+            //This is only if payment for this transaction has been made by an American Express Card
+            //since American Express authorisation status is available only after 5-6 hours by mail from ccavenue and at the "View Pending Orders"
             return "pending";
         }
-        else if($verify_checksum==TRUE && $auth_desc==="N")
+        else if($auth_desc==="Failure")
         {
+            //Here you need to put in the routines for a failed
+            //transaction such as sending an email to customer
+            //setting database status etc etc
+
             return "declined";
         }
         else
         {
+            //Here you need to simply ignore this and dont need
+            //to perform any operation in this condition
             return "error";
         }
 
@@ -305,74 +316,6 @@ class ccAvenueUtils {
     public function __construct(ccAvenuePayment $payment)
     {
         $this->payment = $payment;
-    }
-
-    public function getChecksum()
-    {
-        $str = $this->payment->getMerchantId();
-        $str .= "|". $this->payment->getOrderId();
-        $str .= "|". $this->payment->getAmount();
-        $str .= "|". $this->payment->getRedirectUrl();
-        $str .= "|". $this->payment->getWorkingKey();
-        $adler = 1;
-        $adler = $this->adler32($adler,$str);
-        return $adler;
-    }
-
-    public function genChecksum($str)
-    {
-        $adler = 1;
-        $adler = $this->adler32($adler,$str);
-        return $adler;
-    }
-
-    public function verifyChecksum($getCheck, $avnChecksum)
-    {
-        $verify=false;
-        if($getCheck==$avnChecksum) $verify=true;
-        return $verify;
-    }
-
-    private function adler32($adler , $str)
-    {
-        $BASE =  65521 ;
-        $s1 = $adler & 0xffff ;
-        $s2 = ($adler >> 16) & 0xffff;
-        for($i = 0 ; $i < strlen($str) ; $i++)
-        {
-            $s1 = ($s1 + Ord($str[$i])) % $BASE ;
-            $s2 = ($s2 + $s1) % $BASE ;
-        }
-        return $this->leftshift($s2 , 16) + $s1;
-    }
-
-    private function leftshift($str , $num)
-    {
-
-        $str = DecBin($str);
-
-        for( $i = 0 ; $i < (64 - strlen($str)) ; $i++)
-            $str = "0".$str ;
-
-        for($i = 0 ; $i < $num ; $i++)
-        {
-            $str = $str."0";
-            $str = substr($str , 1 ) ;
-            //echo "str : $str <BR>";
-        }
-        return $this->cdec($str) ;
-    }
-
-    private function cdec($num)
-    {
-        $dec=0;
-        for ($n = 0 ; $n < strlen($num) ; $n++)
-        {
-            $temp = $num[$n] ;
-            $dec =  $dec + $temp*pow(2 , strlen($num) - $n - 1);
-        }
-
-        return $dec;
     }
 
     public function encrypt($plainText,$key)
@@ -411,12 +354,15 @@ class ccAvenueUtils {
         return $decryptedText;
 
     }
+    //*********** Padding Function *********************
 
     private function pkcs5_pad ($plainText, $blockSize)
     {
         $pad = $blockSize - (strlen($plainText) % $blockSize);
         return $plainText . str_repeat(chr($pad), $pad);
     }
+
+    //********** Hexadecimal to Binary function for php 4.0 version ********
 
     private function hextobin($hexString)
     {
