@@ -32,6 +32,9 @@ function local_navigation_extend_navigation(global_navigation $navigation) {
     if ($home = $navigation->find('home', global_navigation::TYPE_SETTING)) {
         $home->remove();
     }
+    if ($mycourses = $navigation->find('mycourses', global_navigation::TYPE_SETTING)) {
+        $mycourses->remove();
+    }
     $settings = get_config('local_navigation');
     if (!empty($settings->menuitems) && $settings->enabled) {
         $menu = new custom_menu($settings->menuitems, current_language());
