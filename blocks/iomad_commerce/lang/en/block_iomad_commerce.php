@@ -174,3 +174,6 @@ $string['type_quantity_n_licenseblock'] = '{$a} licenses';
 $string['unitprice'] = 'Price per license';
 $string['unprocessed'] = 'Unprocessed';
 $string['unprocesseditems'] = 'Unprocessed items';
+$string['pp_ccAvenue_merchant_id'] = 'CCAvenue Merchant Id';
+$string['pp_ccAvenue_working_key'] = 'CCAvenue Working Key';
+$string['pp_ccAvenue_access_code'] = 'CCAvenue Access Code';
