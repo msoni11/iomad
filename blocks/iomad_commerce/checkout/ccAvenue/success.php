@@ -14,14 +14,14 @@ global $CFG;
 $merchant_id = $CFG->ccAvenue_merchant_id;
 $working_key = $CFG->ccAvenue_working_key;
 
-$response=$_POST["encResp"];
+$response = $_POST["encResp"];
 $ccavenue = new ccAvenuePayment($merchant_id, $working_key);
 // Check if the transaction was successfull.
-$error = $ccavenue->response($_POST);
+$error = $ccavenue->response($response);
 
 $basket = get_basket();
 if (!$error) {
-    redirect('confirm.php?u=' . $basket->reference);
+    redirect($CFG->wwwroot."/blocks/iomad_commerce/confirm.php?u=" . $basket->reference);
 }
 
 echo $OUTPUT->header();
