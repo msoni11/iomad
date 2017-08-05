@@ -261,6 +261,7 @@ class ccAvenuePayment {
     }
 
     public function response( $response ) {
+        global $DB;
         $utils = new ccAvenueUtils( $this );
         $resonse_data = $utils->decrypt( $response, $this->getWorkingKey() );
         $payment_data = explode('&', $resonse_data);
@@ -270,24 +271,33 @@ class ccAvenuePayment {
         for($i = 0; $i < $data_size; $i++)
         {
             $information = explode('=',$payment_data[$i]);
-            if($i==3) {
-                $auth_desc=$information[1];
+            if($i == 3) {
+                $auth_desc = $information[1];
             }
         }
+
+        $basket = new stdClass;
+        $basket->id = get_basket_id();
+        $html = "</center>";
 
         if($auth_desc==="Success")
         {
             //Here you need to put in the routines for a successful
             //transaction such as sending an email to customer,
             //setting database status, informing logistics etc etc
-            return "success";
+
+            $basket->status = INVOICESTATUS_PAID;
+            $DB->update_record('invoice', $basket);
+            return '';
         }
         else if($auth_desc==="Aborted")
         {
             //Here you need to put in the routines/e-mail for a  "Batch Processing" order
             //This is only if payment for this transaction has been made by an American Express Card
             //since American Express authorisation status is available only after 5-6 hours by mail from ccavenue and at the "View Pending Orders"
-            return "pending";
+
+            $html .= "<br>Thank you for shopping with us.We will keep you posted regarding the status of your order through e-mail";
+            $basket->status = INVOICESTATUS_UNPAID;
         }
         else if($auth_desc==="Failure")
         {
@@ -295,14 +305,29 @@ class ccAvenuePayment {
             //transaction such as sending an email to customer
             //setting database status etc etc
 
-            return "declined";
+            $html .= "<br>Thank you for shopping with us.However,the transaction has been declined.";
+            $basket->status = INVOICESTATUS_UNPAID;
         }
         else
         {
             //Here you need to simply ignore this and dont need
             //to perform any operation in this condition
-            return "error";
+
+            $html .= "<br>Security Error. Illegal access detected";
+            $basket->status = INVOICESTATUS_UNPAID;
         }
+        $DB->update_record('invoice', $basket);
+        $html .= "<br><br>";
+
+        $html .= "<table cellspacing=4 cellpadding=4>";
+        for($i = 0; $i < $data_size; $i++) {
+            $information = explode('=',$payment_data[$i]);
+            $html .= '<tr><td>'.$information[0].'</td><td>'.urldecode($information[1]).'</td></tr>';
+        }
+
+        $html .= "</table><br>";
+        $html .= "</center>";
+        return $html;
 
     }
 
