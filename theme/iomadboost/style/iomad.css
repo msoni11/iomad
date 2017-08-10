@@ -358,3 +358,8 @@ header {
 .btn-secondary {
   background-color: #fafafa;
 }
+
+.btn-buy-courses {
+  vertical-align: top;
+  padding: 4px 1rem;
+}

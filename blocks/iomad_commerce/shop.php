@@ -16,7 +16,7 @@
 
 require_once(dirname(__FILE__) . '/../iomad_company_admin/lib.php');
 require_once('lib.php');
-
+require_login(null, false);
 require_commerce_enabled();
 
 $sort         = optional_param('sort', 'name', PARAM_ALPHA);
