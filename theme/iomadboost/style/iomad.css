@@ -350,3 +350,11 @@ header {
 .text-center {
   text-align: center;
 }
+
+#page-mod-page-view td,#page-mod-page-view th {
+  border: 1px black solid !important;
+}
+
+.btn-secondary {
+  background-color: #fafafa;
+}
