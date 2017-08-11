@@ -108,6 +108,10 @@ class iomad_signup_form extends moodleform {
             $mform->addHelpButton('recaptcha_element', 'recaptcha', 'auth');
         }
 
+        $mform->addElement('text', 'phone2', get_string('phone2'));
+        $mform->setType('phone2', PARAM_INT);
+        $mform->addRule('phone2', get_string('missingphone2'), 'required', null, 'server');
+
         profile_signup_fields($mform);
 
         if (!empty($CFG->sitepolicy)) {
