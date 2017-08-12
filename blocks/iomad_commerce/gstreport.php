@@ -66,7 +66,6 @@ flush();
 
 if ($orders = $DB->get_recordset_sql("SELECT u.firstname, i.state, c.fullname, ii.quantity, ii.price FROM {invoiceitem} ii JOIN {invoice} i ON i.id = ii.invoiceid JOIN {user} u ON u.id=i.userid JOIN {course} c ON c.id = ii.invoiceableitemid WHERE i.Status != '" . INVOICESTATUS_BASKET . "'", null, $page, $perpage)) {
     if (count($orders)) {
-        $sgst = $cgst = $igst = 0;
         $table = new html_table();
         $table->head = array (get_string('buyer', 'block_iomad_commerce'),
                               get_string('state'),
@@ -81,6 +80,7 @@ if ($orders = $DB->get_recordset_sql("SELECT u.firstname, i.state, c.fullname, i
         $table->align = array ("left", "center", "center", "center");
         $table->width = "95%";
         foreach ($orders as $order) {
+                $sgst = $cgst = $igst = 0;
                 if (strtoupper($order->state) == DEFAULT_STATE) {
                   $sgst = SGST;
                   $cgst = CGST;
