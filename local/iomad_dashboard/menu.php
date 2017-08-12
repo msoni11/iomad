@@ -314,6 +314,17 @@ class iomad_admin_menu {
             'iconsmall' => 'fa-eye'
         );
 
+        $returnarray['gst'] = array(
+            'category' => 'ECommerceAdmin',
+            'tab' => 6,
+            'name' => get_string('gst', 'block_iomad_commerce'),
+            'url' => '/blocks/iomad_commerce/gstreport.php',
+            'cap' => 'block/iomad_commerce:admin_view',
+            'icondefault' => 'orders',
+            'icon' => 'fa-truck',
+            'iconsmall' => 'fa-eye'
+        );
+
         $returnarray['companyframeworks'] = array(
             'category' => 'CompetencyAdmin',
             'tab' => 5,
