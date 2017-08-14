@@ -34,7 +34,7 @@ require_login();
 
 // Correct the navbar.
 // Set the name for the page.
-$linktext = get_string('orders', 'block_iomad_commerce');
+$linktext = get_string('gst', 'block_iomad_commerce');
 // Set the url.
 $linkurl = new moodle_url('/blocks/iomad_commerce/orderlist.php');
 

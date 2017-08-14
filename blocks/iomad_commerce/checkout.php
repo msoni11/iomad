@@ -70,9 +70,9 @@ class checkout_form extends moodleform {
         $mform->addRule('email', $strrequired, 'required', null, 'client');
         $mform->setType('email', PARAM_NOTAGS);
 
-        $mform->addElement('text', 'phone1', get_string('phone'), 'maxlength="20" size="50"');
-        $mform->addRule('phone1', $strrequired, 'required', null, 'client');
-        $mform->setType('phone1', PARAM_NOTAGS);
+        $mform->addElement('text', 'phone2', get_string('phone'), 'maxlength="20" size="50"');
+        $mform->addRule('phone2', $strrequired, 'required', null, 'client');
+        $mform->setType('phone2', PARAM_NOTAGS);
 
         $mform->addElement('header', 'header', get_string('payment_options', 'block_iomad_commerce' ));
 
@@ -139,7 +139,7 @@ if ($mform->is_cancelled()) {
     $displaypage = 0;
 
     $data->id = $basketid;
-
+    $data->phone1 = $data->phone2;
     $DB->update_record('invoice', $data, array('id' => $data->id));
 
     $pp = get_payment_provider_instance($data->paymentprovider);
