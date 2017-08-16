@@ -59,7 +59,11 @@ $iomaddashboard = navigation_node::create(get_string('iomaddashboard', 'theme_io
 $flat = new flat_navigation_node($iomaddashboard, 0);
 $flat->set_showdivider(true);
 $flat->key = 'iomad';
-$PAGE->flatnav->add($flat);
+// Check we are allowed to view this page.
+$systemcontext = context_system::instance();
+if (iomad::has_capability( 'local/iomad_dashboard:view', $systemcontext )) {
+    $PAGE->flatnav->add($flat);
+}
 
 $templatecontext['flatnavigation'] = $PAGE->flatnav;
 
