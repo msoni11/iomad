@@ -82,10 +82,10 @@ if ($orders = $DB->get_recordset_sql("SELECT u.firstname, i.state, c.fullname, i
         foreach ($orders as $order) {
                 $sgst = $cgst = $igst = 0;
                 if (strtoupper($order->state) == DEFAULT_STATE) {
-                  $sgst = SGST;
-                  $cgst = CGST;
+                  $sgst = calculate_gst($order->price);
+                  $cgst = calculate_gst($order->price);
                 } else {
-                  $igst = IGST;
+                  $igst = calculate_igst($order->price);
                 }
                 $table->data[] = array ($order->firstname, 
                                         $order->state,
@@ -93,9 +93,10 @@ if ($orders = $DB->get_recordset_sql("SELECT u.firstname, i.state, c.fullname, i
                                         $order->price,
                                         $order->quantity, 
                                         $order->quantity * $order->price,
-                                        $igst,
-                                        $cgst,
-                                        $sgst);
+                                        round($igst, 2),
+                                        round($cgst, 2),
+                                        round($sgst,2)
+                                        );
         }
 
         if (!empty($table)) {

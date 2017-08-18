@@ -406,3 +406,11 @@ function is_commerce_configured() {
     // Looks ok
     return true;
 }
+
+function calculate_igst($price) {
+    return (0.18 * $price / 1.18);
+}
+
+function calculate_gst($price) {
+    return (0.9 * $price / 1.18);
+}
