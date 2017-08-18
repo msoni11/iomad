@@ -52,8 +52,7 @@ function mycourses_get_my_completion($datefrom = 0) {
                                           AND ue.timestart != 0",
                                           array('userid' => $USER->id));
 
-    // We dont care about these.  If you have enrolled then you are started.
-    $mynotstartedenrolled = array();
+    $mynotstartedenrolled = enrol_get_users_courses($USER->id, false, 'id AS courseid, fullname as coursefullname');
 
     $mynotstartedlicense = $DB->get_records_sql("SELECT clu.id, clu.userid, clu.licensecourseid as courseid, c.fullname as coursefullname, c.summary as coursesummary
                                           FROM {companylicense_users} clu
@@ -89,7 +88,7 @@ function mycourses_get_my_completion($datefrom = 0) {
 
     $mycompletions->mycompleted = $mycompleted;
     $mycompletions->myinprogress = $myinprogress;
-    $mycompletions->mynotstartedenrolled = array();
+    $mycompletions->mynotstartedenrolled = $mynotstartedenrolled;
     $mycompletions->mynotstartedlicense = $mynotstartedlicense;
 
     return $mycompletions;

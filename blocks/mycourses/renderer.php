@@ -42,30 +42,33 @@ class block_mycourses_renderer extends plugin_renderer_base {
 
         // Not started courses listings.
         $returntext .= '<div class="mycourseslisting">';
-        if (!empty($mycompletion->mynotstartedenrolled)) {
-            foreach ($mycompletion->mynotstartedenrolled as $mid => $notstarted) {
-                // Display the course info.
-                $coursecontext = context_course::instance($notstarted->courseid);
-                $summaryinfo = file_rewrite_pluginfile_urls($notstarted->coursesummary, 'pluginfile.php',$coursecontext->id,'course','summary',null);
-                $returntext .= '<div class="mycourselisting"><div class="mycourseheading">';
-                $returntext .= '<h4 class="title"><a href="' . new moodle_url('/course/view.php', array('id' => $notstarted->courseid)) . '">' . $notstarted->coursefullname . '</a></h4></div>';
-                if ($CFG->mycourses_showsummary) {
-                    $returntext .= '<div class="mycoursesummary">' . $summaryinfo . '</div>';
+        if (!empty($mycompletion->mynotstartedenrolled) || !empty($mycompletion->mynotstartedlicense)) {
+            if (!empty($mycompletion->mynotstartedenrolled)) {
+                foreach ($mycompletion->mynotstartedenrolled as $mid => $notstarted) {
+                    // Display the course info.
+                    $coursecontext = context_course::instance($notstarted->courseid);
+                    $summaryinfo = file_rewrite_pluginfile_urls($notstarted->coursesummary, 'pluginfile.php',$coursecontext->id,'course','summary',null);
+                    $returntext .= '<div class="mycourselisting"><div class="mycourseheading">';
+                    $returntext .= '<h4 class="title"><a href="' . new moodle_url('/course/view.php', array('id' => $notstarted->courseid)) . '">' . $notstarted->coursefullname . '</a></h4></div>';
+                    if ($CFG->mycourses_showsummary) {
+                        $returntext .= '<div class="mycoursesummary">' . $summaryinfo . '</div>';
+                    }
+                    $returntext .= '</div>';
                 }
-                $returntext .= '</div>';
             }
-        }
-        if (!empty($mycompletion->mynotstartedlicense)) {
-            foreach ($mycompletion->mynotstartedlicense as $mid => $notstarted) {
-                // Display the course info.
-                $coursecontext = context_course::instance($notstarted->courseid);
-                $summaryinfo = file_rewrite_pluginfile_urls($notstarted->coursesummary, 'pluginfile.php',$coursecontext->id,'course','summary',null);
-                $returntext .= '<div class="mycourselisting"><div class="mycourseheading">';
-                $returntext .= '<h4 class="title"><a href="' . new moodle_url('/course/view.php', array('id' => $notstarted->courseid)) . '">' . $notstarted->coursefullname . '</a></h4></div>';
-                if ($CFG->mycourses_showsummary) {
-                    $returntext .= '<div class="mycoursesummary">' . $summaryinfo . '</div>';
+
+            if (!empty($mycompletion->mynotstartedlicense)) {
+                foreach ($mycompletion->mynotstartedlicense as $mid => $notstarted) {
+                    // Display the course info.
+                    $coursecontext = context_course::instance($notstarted->courseid);
+                    $summaryinfo = file_rewrite_pluginfile_urls($notstarted->coursesummary, 'pluginfile.php',$coursecontext->id,'course','summary',null);
+                    $returntext .= '<div class="mycourselisting"><div class="mycourseheading">';
+                    $returntext .= '<h4 class="title"><a href="' . new moodle_url('/course/view.php', array('id' => $notstarted->courseid)) . '">' . $notstarted->coursefullname . '</a></h4></div>';
+                    if ($CFG->mycourses_showsummary) {
+                        $returntext .= '<div class="mycoursesummary">' . $summaryinfo . '</div>';
+                    }
+                    $returntext .= '</div>';
                 }
-                $returntext .= '</div>';
             }
         } else {
             $returntext .= '<div>' . get_string('nocourses', 'block_mycourses') . '</div>';
