@@ -324,6 +324,11 @@ if ($mform->is_cancelled()) {
                     $upt->track('lastname', $errorstr, 'error');
                     $error = true;
                 }
+                if (!isset($user->phone2) or $user->phone2 === '') {
+                    $upt->track('status', get_string('missingfield', 'error', 'phone2'), 'error');
+                    $upt->track('phone2', $errorstr, 'error');
+                    $error = true;
+                }
                 if ($error) {
                     $userserrors++;
                     continue;

@@ -141,6 +141,10 @@ class user_edit_form extends company_moodleform {
         $mform->disabledIf('due', 'sendnewpasswordemails', 'eq', '0');
         $mform->addHelpButton('due', 'senddate', 'block_iomad_company_admin');
 
+        $mform->addElement('text', 'phone2', get_string('phone2'));
+        $mform->setType('phone2', PARAM_INT);
+        $mform->addRule('phone2', get_string('missingphone2'), 'required', null, 'server');
+
         // Deal with company optional fields.
         $mform->addElement('header', 'category_id', format_string(get_string('companyprofilefields', 'block_iomad_company_admin')));
         // Department drop down.
