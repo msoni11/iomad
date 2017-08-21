@@ -32,6 +32,43 @@ class checkout_form extends moodleform {
         global $CFG, $USER;
 
         $mform =& $this->_form;
+        $indian_all_states  = array (
+         'Andhra Pradesh' => 'Andhra Pradesh',
+         'Arunachal Pradesh' => 'Arunachal Pradesh',
+         'Assam' => 'Assam',
+         'Bihar' => 'Bihar',
+         'Chhattisgarh' => 'Chhattisgarh',
+         'Goa' => 'Goa',
+         'Gujarat' => 'Gujarat',
+         'Haryana' => 'Haryana',
+         'Himachal Pradesh' => 'Himachal Pradesh',
+         'Jammu & Kashmir' => 'Jammu & Kashmir',
+         'Jharkhand' => 'Jharkhand',
+         'Karnataka' => 'Karnataka',
+         'Kerala' => 'Kerala',
+         'Madhya Pradesh' => 'Madhya Pradesh',
+         'Maharashtra' => 'Maharashtra',
+         'Manipur' => 'Manipur',
+         'Meghalaya' => 'Meghalaya',
+         'Mizoram' => 'Mizoram',
+         'Nagaland' => 'Nagaland',
+         'Odisha' => 'Odisha',
+         'Punjab' => 'Punjab',
+         'Rajasthan' => 'Rajasthan',
+         'Sikkim' => 'Sikkim',
+         'Tamil Nadu' => 'Tamil Nadu',
+         'Tripura' => 'Tripura',
+         'Uttarakhand' => 'Uttarakhand',
+         'Uttar Pradesh' => 'Uttar Pradesh',
+         'West Bengal' => 'West Bengal',
+         'Andaman & Nicobar' => 'Andaman & Nicobar',
+         'Chandigarh' => 'Chandigarh',
+         'Dadra and Nagar Haveli' => 'Dadra and Nagar Haveli',
+         'Daman & Diu' => 'Daman & Diu',
+         'Delhi' => 'Delhi',
+         'Lakshadweep' => 'Lakshadweep',
+         'Puducherry' => 'Puducherry',
+        );
 
         $mform->addElement('header', 'header', get_string('purchaser_details', 'block_iomad_commerce'));
 
@@ -57,9 +94,8 @@ class checkout_form extends moodleform {
         $mform->addRule('postcode', $strrequired, 'required', null, 'client');
         $mform->setType('postcode', PARAM_NOTAGS);
 
-        $mform->addElement('text', 'state', get_string('state', 'block_iomad_commerce'), 'maxlength="20" size="20"');
+        $mform->addElement('select', 'state', get_string('state', 'block_iomad_commerce'), $indian_all_states);
         $mform->addRule('state', $strrequired, 'required', null, 'client');
-        $mform->setType('state', PARAM_NOTAGS);
 
         $choices = get_string_manager()->get_list_of_countries();
         $choices = array('' => get_string('selectacountry').'...') + $choices;
