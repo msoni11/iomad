@@ -16,6 +16,8 @@
 
 require_once(dirname(__FILE__) . '/../iomad_company_admin/lib.php');
 require_once('lib.php');
+require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->libdir.'/dataformatlib.php');
 
 require_commerce_enabled();
 
@@ -28,6 +30,7 @@ $sort         = optional_param('sort', 'name', PARAM_ALPHA);
 $dir          = optional_param('dir', 'ASC', PARAM_ALPHA);
 $page         = optional_param('page', 0, PARAM_INT);
 $perpage      = optional_param('perpage', 30, PARAM_INT);        // How many per page.
+$dataformat   = optional_param('dataformat', '', PARAM_ALPHA);
 
 $context = context_system::instance();
 require_login();
@@ -53,7 +56,48 @@ company_admin_fix_breadcrumb($PAGE, $linktext, $linkurl);
 $baseurl = new moodle_url(basename(__FILE__), array('sort' => $sort, 'dir' => $dir, 'perpage' => $perpage));
 $returnurl = $baseurl;
 
+if ($dataformat) {
+    $fields = array('buyer'    => 'buyer',
+                    'state'    => 'state',
+                    'course'   => 'course',
+                    'quantity' => 'quantity',
+                    'price'    => 'price',
+                    'date'     => 'date',
+                    'total'    => 'total',
+                    'igst'     => 'igst',
+                    'cgst'     => 'cgst',
+                    'sgst'     => 'sgst',
+                    );
+
+    $filename = clean_filename('gstreport');
+    $orders = $DB->get_records_sql("SELECT u.firstname as buyer, i.state, c.fullname as course, ii.quantity, ii.price, i.date FROM {invoiceitem} ii JOIN {invoice} i ON i.id = ii.invoiceid JOIN {user} u ON u.id=i.userid JOIN {course} c ON c.id = ii.invoiceableitemid WHERE i.Status != '" . INVOICESTATUS_BASKET . "'");
+
+    foreach ($orders as $order) {
+      $order->date = userdate($order->date);
+      $sgst = $cgst = $igst = 0;
+      if (strtoupper($order->state) == DEFAULT_STATE) {
+        $sgst = calculate_gst($order->price);
+        $cgst = calculate_gst($order->price);
+      } else {
+        $igst = calculate_igst($order->price);
+      }
+      $order->total = $order->quantity * $order->price;
+      $order->igst = round($igst, 2);
+      $order->cgst = round($cgst, 2);
+      $order->sgst = round($sgst, 2);
+    }
+
+    $downloadusers = new ArrayObject($orders);
+    $iterator = $downloadusers->getIterator();
+
+    download_as_dataformat($filename, $dataformat, $fields, $iterator);
+
+    exit;
+}
+
 echo $OUTPUT->header();
+
+echo $OUTPUT->download_dataformat_selector(get_string('userbulkdownload', 'admin'), 'gstreport.php');
 
 //  Check we can actually do anything on this page.
 iomad::require_capability('block/iomad_commerce:admin_view', $context);
@@ -64,7 +108,7 @@ echo $OUTPUT->paging_bar($objectcount, $page, $perpage, $baseurl);
 
 flush();
 
-if ($orders = $DB->get_recordset_sql("SELECT u.firstname, i.state, c.fullname, ii.quantity, ii.price FROM {invoiceitem} ii JOIN {invoice} i ON i.id = ii.invoiceid JOIN {user} u ON u.id=i.userid JOIN {course} c ON c.id = ii.invoiceableitemid WHERE i.Status != '" . INVOICESTATUS_BASKET . "'", null, $page, $perpage)) {
+if ($orders = $DB->get_recordset_sql("SELECT u.firstname, i.state, i.date, c.fullname, ii.quantity, ii.price FROM {invoiceitem} ii JOIN {invoice} i ON i.id = ii.invoiceid JOIN {user} u ON u.id=i.userid JOIN {course} c ON c.id = ii.invoiceableitemid WHERE i.Status != '" . INVOICESTATUS_BASKET . "'", null, $page, $perpage)) {
     if (count($orders)) {
         $table = new html_table();
         $table->head = array (get_string('buyer', 'block_iomad_commerce'),
@@ -76,6 +120,7 @@ if ($orders = $DB->get_recordset_sql("SELECT u.firstname, i.state, c.fullname, i
                               get_string('igst', 'block_iomad_commerce'),
                               get_string('cgst', 'block_iomad_commerce'),
                               get_string('sgst', 'block_iomad_commerce'),
+                              get_string('date'),
                               '');
         $table->align = array ("left", "center", "center", "center");
         $table->width = "95%";
@@ -95,7 +140,8 @@ if ($orders = $DB->get_recordset_sql("SELECT u.firstname, i.state, c.fullname, i
                                         $order->quantity * $order->price,
                                         round($igst, 2),
                                         round($cgst, 2),
-                                        round($sgst,2)
+                                        round($sgst,2),
+                                        userdate($order->date)
                                         );
         }
 
