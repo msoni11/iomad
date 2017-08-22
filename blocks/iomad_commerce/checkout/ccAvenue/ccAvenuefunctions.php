@@ -6,7 +6,6 @@
  * Time: 12:50
  */
 
-
 class ccAvenuePayment {
 
     private $working_key;
@@ -264,33 +263,47 @@ class ccAvenuePayment {
         global $DB;
         $utils = new ccAvenueUtils( $this );
         $resonse_data = $utils->decrypt( $response, $this->getWorkingKey() );
-        $payment_data = explode('&', $resonse_data);
-        $data_size = sizeof($payment_data);
+        //$payment_data = explode('&', $resonse_data);
+        $data_size = sizeof(explode('&', $resonse_data));
 
         $auth_desc = null;
-        for($i = 0; $i < $data_size; $i++)
-        {
-            $information = explode('=',$payment_data[$i]);
-            if($i == 3) {
-                $auth_desc = $information[1];
-            }
-        }
+//        for($i = 0; $i < $data_size; $i++)
+//        {
+//            $information = explode('=',$payment_data[$i]);
+//            if($i == 3) {
+//                $auth_desc = $information[1];
+//            }
+//        }
+
+        $payment_data = deformatnvp($resonse_data);
+        $auth_desc = strtoupper($payment_data['order_status']);
 
         $basket = new stdClass;
         $basket->id = get_basket_id();
         $html = "</center>";
 
-        if($auth_desc==="Success")
+        if($auth_desc==="SUCCESS")
         {
             //Here you need to put in the routines for a successful
             //transaction such as sending an email to customer,
             //setting database status, informing logistics etc etc
 
+            setprop($basket, 'pp_ack',             'order_status',     $payment_data);
+            setprop($basket, 'pp_transactionid',   'tracking_id',      $payment_data);
+            setprop($basket, 'pp_transactiontype', 'payment_mode',     $payment_data);
+            setprop($basket, 'pp_paymenttype',     'card_name',        $payment_data);
+            setprop($basket, 'pp_ordertime',       'trans_date',       $payment_data);
+            setprop($basket, 'pp_currencycode',    'currency',         $payment_data);
+            setprop($basket, 'pp_amount',          'amount',           $payment_data);
+            setprop($basket, 'pp_paymentstatus',   'status_message',   $payment_data);
+            setprop($basket, 'pp_pendingreason',   'failure_message',  $payment_data);
+            setprop($basket, 'pp_reason',          'status_code',      $payment_data);
+
             $basket->status = INVOICESTATUS_PAID;
             $DB->update_record('invoice', $basket);
             return '';
         }
-        else if($auth_desc==="Aborted")
+        else if($auth_desc==="ABORTED")
         {
             //Here you need to put in the routines/e-mail for a  "Batch Processing" order
             //This is only if payment for this transaction has been made by an American Express Card
@@ -299,7 +312,7 @@ class ccAvenuePayment {
             $html .= "<br>Thank you for shopping with us.We will keep you posted regarding the status of your order through e-mail";
             $basket->status = INVOICESTATUS_UNPAID;
         }
-        else if($auth_desc==="Failure")
+        else if($auth_desc==="FAILURE")
         {
             //Here you need to put in the routines for a failed
             //transaction such as sending an email to customer
@@ -413,4 +426,39 @@ class ccAvenueUtils {
         return $binString;
     }
 
+}
+
+
+function setprop($basket, $propname, $arrayindex, $array, $default = null) {
+    if (array_key_exists($arrayindex, $array)) {
+        $basket->$propname = $array[$arrayindex];
+    } else if ($default) {
+        $basket->$propname = $default;
+    }
+}
+
+/*
+* This function will take NVPString and convert it to an Associative Array and it will decode the response.
+* It is usefull to search for a particular key and displaying arrays.
+* @nvpstr is NVPString.
+* @nvparray is Associative Array.
+*/
+function deformatnvp($nvpstr) {
+    $intial = 0;
+    $nvparray = array();
+
+    while (strlen($nvpstr)) {
+        // Postion of Key.
+        $keypos = strpos($nvpstr, '=');
+        // Position of value.
+        $valuepos = strpos($nvpstr, '&') ? strpos($nvpstr, '&'): strlen($nvpstr);
+
+        /* Getting the Key and Value values and storing in a Associative Array. */
+        $keyval = substr($nvpstr, $intial, $keypos);
+        $valval = substr($nvpstr, $keypos + 1, $valuepos-$keypos - 1);
+        // Decoding the respose.
+        $nvparray[urldecode($keyval)] = urldecode($valval);
+        $nvpstr = substr($nvpstr, $valuepos + 1, strlen($nvpstr));
+    }
+    return $nvparray;
 }
