@@ -58,6 +58,10 @@ function mycourses_get_my_completion($datefrom = 0) {
        unset($mynotstartedenrolled[$mi->courseid]);
     }
 
+    foreach ($mycompleted as $mc) {
+        unset($mynotstartedenrolled[$mc->courseid]);
+    }
+
     $mynotstartedlicense = $DB->get_records_sql("SELECT clu.id, clu.userid, clu.licensecourseid as courseid, c.fullname as coursefullname, c.summary as coursesummary
                                           FROM {companylicense_users} clu
                                           JOIN {course} c ON (c.id = clu.licensecourseid)

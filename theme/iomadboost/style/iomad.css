@@ -363,3 +363,28 @@ header {
   vertical-align: top;
   padding: 4px 1rem;
 }
+
+#stockPage .stock { display: block; padding: 20px 0; } 
+#stockPage .section { display: block; width: 100%; padding:15px 0; float: left; }
+h5 { font-family:Verdana, Geneva, sans-serif; font-size: 20px; color: #717274; margin: 0; padding: 0; }
+
+#stockPage .add_watchlist { }
+#stockPage .add_watchlist td:first-child{ text-align: left; font-size: 16px; color: #101010;font-family:Verdana, Geneva, sans-serif; font-weight: bold; }
+#stockPage .add_watchlist td:last-child { text-align: left; }
+#stockPage .bttn { border-radius: 3px; background: #4472c4; border: 1px solid #345694; font-size: 14px; color: #fff; text-align: center; font-family:Verdana, Geneva, sans-serif; text-decoration: none !important; padding: 12px 15px; display:inline-block; }
+#stockPage .tax { color: #00b050; font-style: normal; }
+
+#stockPage .rating { margin: 0; padding: 0; border: 1px solid #e7e7e7; }
+#stockPage .rating tr { border-bottom: 1px solid #f9f9f9; }#stockPage .rating tr:last-child { border-bottom: none; }
+#stockPage .rating td { padding: 6px 15px; }
+#stockPage .rating_item { list-style-type: none; padding:  0 0 10px ;  }
+#stockPage .rating_item span {  color: #717274; font-size: 14px; font-family:Verdana, Geneva, sans-serif; }
+#stockPage .star_rate { text-align: left; display:block; }
+#stockPage .star_rate i { display: inline-block; width: 20px; height: 20px; padding:3px; }
+#stockPage .full_star,#stockPage .half_star, blank_star { position: relative; }
+#stockPage .full_star:before { position: absolute; top: 0; left: 0; color: #fcb040; font-size: 14px; font-family: 'FontAwesome'; content: "\f005"; position: relative; font-style: normal; }
+
+#stockPage .half_star:before { position: absolute; top: 0; left: 0; color: #fcb040; font-size: 14px; font-family: 'FontAwesome'; content: "\f123"; position: relative; font-style: normal; }
+#stockPage .blank_star:before { position: absolute; top: 0; left: 0; color: #fcb040; font-size: 14px; font-family: 'FontAwesome'; content: "\f006"; position: relative; font-style: normal; }
+
+#stockPage  span.bold_text { font-size: 16px; color: #101010;font-family:Verdana, Geneva, sans-serif; font-weight: bold;}

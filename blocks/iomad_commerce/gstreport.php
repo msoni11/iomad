@@ -67,13 +67,13 @@ if ($dataformat) {
                     'igst'     => 'igst',
                     'cgst'     => 'cgst',
                     'sgst'     => 'sgst',
+                    'month'    => 'month'
                     );
 
     $filename = clean_filename('gstreport');
     $orders = $DB->get_records_sql("SELECT u.firstname as buyer, i.state, c.fullname as course, ii.quantity, ii.price, i.date FROM {invoiceitem} ii JOIN {invoice} i ON i.id = ii.invoiceid JOIN {user} u ON u.id=i.userid JOIN {course} c ON c.id = ii.invoiceableitemid WHERE i.Status != '" . INVOICESTATUS_BASKET . "'");
 
     foreach ($orders as $order) {
-      $order->date = userdate($order->date);
       $sgst = $cgst = $igst = 0;
       if (strtoupper($order->state) == DEFAULT_STATE) {
         $sgst = calculate_gst($order->price);
@@ -85,6 +85,8 @@ if ($dataformat) {
       $order->igst = round($igst, 2);
       $order->cgst = round($cgst, 2);
       $order->sgst = round($sgst, 2);
+      $order->month = userdate($order->date, get_string('strftimemonthyear', 'langconfig'));
+      $order->date = userdate($order->date);    
     }
 
     $downloadusers = new ArrayObject($orders);
