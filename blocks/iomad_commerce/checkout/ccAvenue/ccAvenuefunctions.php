@@ -330,15 +330,6 @@ class ccAvenuePayment {
             $basket->status = INVOICESTATUS_UNPAID;
         }
         $DB->update_record('invoice', $basket);
-        $html .= "<br><br>";
-
-        $html .= "<table cellspacing=4 cellpadding=4>";
-        for($i = 0; $i < $data_size; $i++) {
-            $information = explode('=',$payment_data[$i]);
-            $html .= '<tr><td>'.$information[0].'</td><td>'.urldecode($information[1]).'</td></tr>';
-        }
-
-        $html .= "</table><br>";
         $html .= "</center>";
         return $html;
 
