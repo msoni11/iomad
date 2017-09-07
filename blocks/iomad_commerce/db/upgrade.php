@@ -145,7 +145,7 @@ function xmldb_block_iomad_commerce_upgrade($oldversion) {
         upgrade_block_savepoint(true, 2017030700, 'iomad_commerce');
     }
 
-    if ($oldversion < 20170907) {
+    if ($oldversion < 2017090702) {
 
         $table = new xmldb_table('invoice');
 
@@ -186,7 +186,7 @@ function xmldb_block_iomad_commerce_upgrade($oldversion) {
         $dbman->change_field_precision($table, $field);
 
         // Iomad_commerce savepoint reached.
-        upgrade_block_savepoint(true, 20170907, 'iomad_commerce');
+        upgrade_block_savepoint(true, 2017090702, 'iomad_commerce');
     }
 
 
