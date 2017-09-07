@@ -144,5 +144,53 @@ function xmldb_block_iomad_commerce_upgrade($oldversion) {
         // Iomad_commerce savepoint reached.
         upgrade_block_savepoint(true, 2017030700, 'iomad_commerce');
     }
+
+    if ($oldversion < 20170907) {
+
+        $table = new xmldb_table('invoice');
+
+        // Changing precision of field pp_ack on table invoice to (100).
+        $field = new xmldb_field('pp_ack', XMLDB_TYPE_CHAR, '100', null, null, null, null, 'lastname');
+        // Launch change of precision for field pp_ack.
+        $dbman->change_field_precision($table, $field);
+
+        // Changing precision of field pp_transactiontype on table invoice to (100).
+        $field = new xmldb_field('pp_transactiontype', XMLDB_TYPE_CHAR, '100', null, null, null, null, 'pp_transactionid');
+        // Launch change of precision for field pp_transactiontype.
+        $dbman->change_field_precision($table, $field);
+
+        // Changing precision of field pp_paymenttype on table invoice to (100).
+        $field = new xmldb_field('pp_paymenttype', XMLDB_TYPE_CHAR, '100', null, null, null, null, 'pp_transactiontype');
+        // Launch change of precision for field pp_paymenttype.
+        $dbman->change_field_precision($table, $field);
+
+        // Changing precision of field pp_ordertime on table invoice to (100).
+        $field = new xmldb_field('pp_ordertime', XMLDB_TYPE_CHAR, '100', null, null, null, null, 'pp_paymenttype');
+        // Launch change of precision for field pp_ordertime.
+        $dbman->change_field_precision($table, $field);
+
+
+        // Changing precision of field pp_paymentstatus on table invoice to (500).
+        $field = new xmldb_field('pp_paymentstatus', XMLDB_TYPE_CHAR, '500', null, null, null, null, 'pp_exchangerate');
+        // Launch change of precision for field pp_paymentstatus.
+        $dbman->change_field_precision($table, $field);
+
+        // Changing precision of field pp_pendingreason on table invoice to (500).
+        $field = new xmldb_field('pp_pendingreason', XMLDB_TYPE_CHAR, '500', null, null, null, null, 'pp_paymentstatus');
+        // Launch change of precision for field pp_pendingreason.
+        $dbman->change_field_precision($table, $field);
+
+        // Changing precision of field pp_reason on table invoice to (500).
+        $field = new xmldb_field('pp_reason', XMLDB_TYPE_CHAR, '500', null, null, null, null, 'pp_pendingreason');
+        // Launch change of precision for field pp_reason.
+        $dbman->change_field_precision($table, $field);
+
+        // Iomad_commerce savepoint reached.
+        upgrade_block_savepoint(true, 20170907, 'iomad_commerce');
+    }
+
+
+
+
     return $result;
 }
